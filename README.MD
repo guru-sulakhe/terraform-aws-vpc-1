@@ -45,3 +45,8 @@
  * vpc_peering_connection_tags(Opt) : defualt value is empty. Type is map
 
  ## Outputs ##
+ * vpc_id : VPC ID
+ * public_subnet_ids : a list of 2 public subnet IDs created
+ * private_subnet_ids : a list of 2 private subnet IDs created
+ * database_subnet_ids : a list of 2 database subnet IDs created
+ * database_subnet_group_id : a database subnet group ID created 
