@@ -179,7 +179,7 @@ resource "aws_route_table_association" "database" {
 }
 
 # Database subnet group
-resource "aws_db_sunet_group" "default"{
+resource "aws_db_subnet_group" "default"{
   name = "${local.resource_name}"
   subnet_ids = "aws_subnet.database[*].id"
   tags = merge(
