@@ -181,7 +181,7 @@ resource "aws_route_table_association" "database" {
 # Database subnet group
 resource "aws_db_subnet_group" "default"{
   name = "${local.resource_name}"
-  subnet_ids = "aws_subnet.database[*].id"
+  subnet_ids = aws_subnet.database[*].id
   tags = merge(
     var.common_tags,
     var.database_subnet_group_tags,
