@@ -28,10 +28,10 @@ resource "aws_internet_gateway" "gw" {
 # Public Subnet
 resource "aws_subnet" "public" {
   count = length(var.public_subnet_cidrs) # first name is public[0],second name is public[1]
-  availability_zone = local.az_names[count.index]
-  map_public_ip_on_launch = true
+  availability_zone = local.az_names[count.index] # for selecting appropriate us-east-1a,us-east-1b availability zones for respective subnet zones
+  map_public_ip_on_launch = true # launching public subnets with public ip addresses
   vpc_id     = aws_vpc.main.id
-  cidr_block = var.public_subnet_cidrs[count.index]
+  cidr_block = var.public_subnet_cidrs[count.index] # selecting 2 subnet cidrs blocks from public subnets
 
   tags = merge(
     var.common_tags,
@@ -82,7 +82,7 @@ resource "aws_eip" "eip" {
 # NAT Gateway
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.eip.id
-  subnet_id     = aws_subnet.public[0].id # public subnet is included for the NAT gateway 
+  subnet_id     = aws_subnet.public[0].id # public subnet of us-east-1a is included for the NAT gateway 
 
   tags = merge(
     var.common_tags,
@@ -159,22 +159,23 @@ resource "aws_route" "database_route_nat" {
 
 # public Route Table and Public Subnet Association
 resource "aws_route_table_association" "public" {
-  count = length(var.public_subnet_cidrs)
-  subnet_id      = element(aws_subnet.public[*].id, count.index) 
+  count = length(var.public_subnet_cidrs) # loop 2 times for length of 2 public subnet cidrs
+  subnet_id      = element(aws_subnet.public[*].id, count.index) # associating public route table to 2 public subnets 
   route_table_id = aws_route_table.public.id
 }
 
 # private Route Table and Private Subnet Association
 resource "aws_route_table_association" "private" {
-  count = length(var.private_subnet_cidrs)
-  subnet_id = element(aws_subnet.private[*].id, count.index)
+  count = length(var.private_subnet_cidrs) # loop 2 times for length of 2 private subnet cidrs
+  subnet_id = element(aws_subnet.private[*].id, count.index) # associating private route table to 2 private subnets
   route_table_id = aws_route_table.private.id
 }
+# element() is used to select particular element from a list
 
 # database Route Table and Database Subnet Association
 resource "aws_route_table_association" "database" {
-  count = length(var.database_subnet_cidrs)
-  subnet_id = element(aws_subnet.database[*].id, count.index)
+  count = length(var.database_subnet_cidrs) # loop 2 times for length of 2 database subnet cidrs
+  subnet_id = element(aws_subnet.database[*].id, count.index) # associating database route table to 2 database subnets
   route_table_id = aws_route_table.database.id
 }
 

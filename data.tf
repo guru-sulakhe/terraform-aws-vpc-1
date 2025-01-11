@@ -1,4 +1,4 @@
-data "aws_availability_zones" "available" {
+data "aws_availability_zones" "available" { # to query the availability zones in the provider
   state = "available"
 }
 data "aws_vpc" "default" {

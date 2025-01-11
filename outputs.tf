@@ -1,5 +1,5 @@
-# output "azs" {
-#   value       = data.aws_availability_zones.available.names
+# output "azs" { #exposing the availability zones during terraform paln of terraform-vpc-test-1
+#   value       = data.aws_availability_zones.available.names  
 # }
 
 output "vpc_id" {
