@@ -164,18 +164,20 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# private Route Table and Private Subnet Association
+# private Route Table and Private Subnet Association, Attaching private route 2 private database subnets
 resource "aws_route_table_association" "private" {
   count = length(var.private_subnet_cidrs) # loop 2 times for length of 2 private subnet cidrs
   subnet_id = element(aws_subnet.private[*].id, count.index) # associating private route table to 2 private subnets
+  #element() is used to select an element from a list of items
   route_table_id = aws_route_table.private.id
 }
 # element() is used to select particular element from a list
 
-# database Route Table and Database Subnet Association
+# database Route Table and Database Subnet Association, Attaching database route to 2 database subnets
 resource "aws_route_table_association" "database" {
   count = length(var.database_subnet_cidrs) # loop 2 times for length of 2 database subnet cidrs
   subnet_id = element(aws_subnet.database[*].id, count.index) # associating database route table to 2 database subnets
+  #element() is used to select an element from a list of items
   route_table_id = aws_route_table.database.id
 }
 
