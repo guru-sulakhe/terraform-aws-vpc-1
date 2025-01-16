@@ -3,5 +3,5 @@ locals {
   az_names = slice(data.aws_availability_zones.available.names, 0,2) # slecting first two avialability zones from its names i.e us-east-1a,us-east-1b
 }
 
-# slice function is used to cut the data into req info
+# slice function is used to cut the data into req info and it is used to trim the list datatype
 # in the slice function will able to query the aws_availability_zones into two zones i.e us-east-1a,us-east-1b
