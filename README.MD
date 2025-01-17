@@ -22,6 +22,7 @@
 
 
  ## Inputs ##
+ # (Req) must be supplied in the form of variables during the module usage
  * project_name(Req) : user should mention there project name. Type is string
  * environment(opt) : default value is dev and Type is string
  * common_tags(Req) : user should provide their tags related to the project. Type is map
