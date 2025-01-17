@@ -6,6 +6,7 @@ data "aws_vpc" "default" {
 }
 
 #querying default vpc main route table
+#main route table will be created for the defualt vpc
 data "aws_route_table" "main" {
   vpc_id = data.aws_vpc.default.id
   filter {
