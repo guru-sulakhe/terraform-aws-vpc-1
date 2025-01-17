@@ -13,6 +13,7 @@ resource "aws_vpc_peering_connection" "peering" {
 }
 
 # count is useful to control when resource is required
+# attaching Acceptor route table to the default vpc ID for peering connection
 resource "aws_route" "public_peering" {
   count = var.is_peering_required && var.acceptor_vpc_id == "" ? 1 : 0
   route_table_id            = aws_route_table.public.id # selecting public route table 
@@ -20,6 +21,7 @@ resource "aws_route" "public_peering" {
   vpc_peering_connection_id = aws_vpc_peering_connection.peering[0].id # peering[0] must be included because we are using count and count is a list
 }
 
+# attaching Acceptor route table to the default vpc ID for peering connection
 resource "aws_route" "private_peering" {
   count = var.is_peering_required && var.acceptor_vpc_id == "" ? 1 : 0
   route_table_id            = aws_route_table.private.id # selecting public route table
@@ -27,6 +29,7 @@ resource "aws_route" "private_peering" {
   vpc_peering_connection_id = aws_vpc_peering_connection.peering[0].id # peering[0] must be included because we are using count and count is a list
 }
 
+# attaching Acceptor route table to the default vpc ID for peering connection
 resource "aws_route" "database_peering" {
   count = var.is_peering_required && var.acceptor_vpc_id == "" ? 1 : 0
   route_table_id            = aws_route_table.database.id # selecting public route table 
@@ -37,7 +40,7 @@ resource "aws_route" "database_peering" {
 resource "aws_route" "default_peering" {
   count = var.is_peering_required && var.acceptor_vpc_id == "" ? 1 : 0
   # main route table is created for default vpc
-  # thus we are adding default vpc route table to the acceptor-VPC
+  # thus we are adding default vpc main route table to the Acceptor-VPC by peering connection
   route_table_id            = data.aws_route_table.main.id # selecting default vpc main route table 
   destination_cidr_block    = var.vpc_cidr # selecting expense vpc CIDR
   vpc_peering_connection_id = aws_vpc_peering_connection.peering[0].id # peering[0] must be included because we are using count and count is a list
