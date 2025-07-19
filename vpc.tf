@@ -44,8 +44,8 @@ resource "aws_subnet" "public" {
 
 # Private Subnet
 resource "aws_subnet" "private" {
-  count = length(var.private_subnet_cidrs) # first name is private[0],second name is private[1]
-  availability_zone = local.az_names[count.index]
+  count = length(var.private_subnet_cidrs) # 2 private subnets are created
+  availability_zone = local.az_names[count.index] # subnets will be created in us-east-1a,us-east-1b avaialability zones
   vpc_id     = aws_vpc.main.id
   cidr_block = var.private_subnet_cidrs[count.index]
 
@@ -60,8 +60,8 @@ resource "aws_subnet" "private" {
 
 # Database Subnet
 resource "aws_subnet" "database" {
-  count = length(var.database_subnet_cidrs) # 2 subnets will be created
-  availability_zone = local.az_names[count.index]
+  count = length(var.database_subnet_cidrs) # 2 database subnets are created
+  availability_zone = local.az_names[count.index] # subnets will be created in us-east-1a,us-east-1b avaialability zones
   vpc_id     = aws_vpc.main.id
   cidr_block = var.database_subnet_cidrs[count.index]
 
@@ -167,7 +167,7 @@ resource "aws_route_table_association" "public" {
 # private Route Table and Private Subnet Association, Attaching private Route table to 2 private subnets
 resource "aws_route_table_association" "private" {
   count = length(var.private_subnet_cidrs) # loop 2 times for length of 2 private subnet cidrs
-  subnet_id = element(aws_subnet.private[*].id, count.index) # associating private route table to 2 private subnets
+  subnet_id = element(aws_subnet.private[*].id, count.index) # associating private route table to 2 private subnets using count.index
   #element() is used to select an element from a list of items
   route_table_id = aws_route_table.private.id
 }
@@ -176,7 +176,7 @@ resource "aws_route_table_association" "private" {
 # database Route Table and Database Subnet Association, Attaching database Route Table to 2 database subnets
 resource "aws_route_table_association" "database" {
   count = length(var.database_subnet_cidrs) # loop 2 times for length of 2 database subnet cidrs
-  subnet_id = element(aws_subnet.database[*].id, count.index) # associating database route table to 2 database subnets
+  subnet_id = element(aws_subnet.database[*].id, count.index) # associating database route table to 2 database subnets using count.index
   #element() is used to select an element from a list of items
   route_table_id = aws_route_table.database.id
 }
