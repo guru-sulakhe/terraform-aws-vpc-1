@@ -1,4 +1,4 @@
-resource "aws_vpc_peering_connection" "peering" {
+resource "aws_vpc_peering_connection" "peering" { # this block will execute only when var.is_peering_required is true
     count = var.is_peering_required ? 1 : 0 # peering connection will be created if the variable is_peering_required is true, if it is is_peering_required is false then it wont be created.
     peer_vpc_id = var.acceptor_vpc_id == "" ? data.aws_vpc.default.id : var.acceptor_vpc_id# acceptor VPC
     vpc_id = aws_vpc.main.id# requestor VPC
@@ -37,7 +37,7 @@ resource "aws_route" "database_peering" {
   vpc_peering_connection_id = aws_vpc_peering_connection.peering[0].id # peering[0] must be included because we are using count and count is a list
 }
 
-resource "aws_route" "default_peering" {
+resource "aws_route" "default_peering" { #requestor vpc peering connection i,e default_vpc
   count = var.is_peering_required && var.acceptor_vpc_id == "" ? 1 : 0
   # main route table is created for default vpc
   # thus we are adding default vpc main route table to the Acceptor-VPC by peering connection
