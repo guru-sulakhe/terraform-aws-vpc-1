@@ -1,5 +1,5 @@
 resource "aws_vpc_peering_connection" "peering" {
-    count = var.is_peering_required ? 1 : 0 # peering connection will be created if the variable is_peering_required is true
+    count = var.is_peering_required ? 1 : 0 # peering connection will be created if the variable is_peering_required is true, if it is is_peering_required is false then it wont be created.
     peer_vpc_id = var.acceptor_vpc_id == "" ? data.aws_vpc.default.id : var.acceptor_vpc_id# acceptor VPC
     vpc_id = aws_vpc.main.id# requestor VPC
     auto_accept = var.acceptor_vpc_id == "" ? true : false
