@@ -1,7 +1,7 @@
 ![alt text](Downloads/vpc.jpg)
 
 # Custom AWS VPC module
- This module is developed for joindevops.com
+ This module is developed for guru97s.cloud
 
  We are creating the following resources. This module is creates resources in first 2 availability zones for HA.
 
